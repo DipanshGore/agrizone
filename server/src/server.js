@@ -8,8 +8,8 @@ dotenv.config();
 let port = process.env.PORT;
 
 const app = express();
-
 app.use(express.json());
+
 app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
@@ -18,5 +18,5 @@ app.get('/', (req, res) => {
 
 app.listen(port, () => {
     console.log(`server running on port ${port}`);
-    // connectDB();
+    connectDB();
 });
