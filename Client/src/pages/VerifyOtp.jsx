@@ -26,12 +26,6 @@ const VerifyOtp = () => {
         }
     };
 
-    const handleKeyDown = (e, idx) => {
-        if (e.key === "Backspace" && !otp[idx] && idx > 4) {
-            inputsRef[idx - 1].current.focus();
-        }
-    };
-
     const handleSubmit = (e) => {
         e.preventDefault();
         const enteredOtp = otp.join("");
@@ -77,7 +71,6 @@ const VerifyOtp = () => {
                             ref={inputsRef[idx]}
                             value={digit}
                             onChange={e => handleChange(e, idx)}
-                            onKeyDown={e => handleKeyDown(e, idx)}
                             maxLength={1}
                             className="w-12 h-12 text-center border-b-2 border-green-600 text-2xl font-mono focus:outline-none focus:ring-2 focus:ring-green-400 transition"
                             inputMode="numeric"

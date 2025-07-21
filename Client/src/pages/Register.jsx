@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { FaUser, FaEnvelope, FaLock, FaUserTie, FaTractor, FaUserShield, FaArrowRight, FaPhone } from 'react-icons/fa';
 
 const Register = () => {
     const navigate = useNavigate();
@@ -7,22 +8,26 @@ const Register = () => {
     const [form, setForm] = useState({
         name: '',
         email: '',
+        mobile: '',
         password: '',
         confirmPassword: '',
         farmerType: '',
     });
     const [message, setMessage] = useState('');
+    const [error, setError] = useState('');
 
     const handleTypeSwitch = (type) => {
         setActiveType(type);
         setForm({
             name: '',
             email: '',
+            mobile: '',
             password: '',
             confirmPassword: '',
             farmerType: '',
         });
         setMessage('');
+        setError('');
     };
 
     const handleChange = (e) => {
@@ -30,25 +35,28 @@ const Register = () => {
             ...form,
             [e.target.name]: e.target.value,
         });
+        setError('');
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        if (!form.name || !form.email || !form.mobile || !form.password || !form.confirmPassword || (activeType === 'farmer' && !form.farmerType)) {
+            setError('Please fill all required fields.');
+            return;
+        }
+
+        if (!/^[6-9]\d{9}$/.test(form.mobile)) {
+            setError('Please enter a valid 10-digit mobile number.');
+            return;
+        }
+
         if (form.password !== form.confirmPassword) {
-            setMessage('Passwords do not match!');
+            setError('Passwords do not match!');
             return;
         }
 
-        if (activeType === 'farmer' && !form.farmerType) {
-            setMessage('Please select your farmer type.');
-            return;
-        }
-
-        navigate('/verify-otp', {
-            state: { email: form.email }
-        });
-
+        setError('');
         let summary = '';
         if (activeType === 'customer') {
             summary = `Registered as Customer: ${form.name} (${form.email})`;
@@ -59,9 +67,14 @@ const Register = () => {
         }
         setMessage(summary);
 
+        navigate('/verify-otp', {
+            state: { email: form.email }
+        });
+
         setForm({
             name: '',
             email: '',
+            mobile: '',
             password: '',
             confirmPassword: '',
             farmerType: '',
@@ -70,123 +83,177 @@ const Register = () => {
 
     return (
         <div className="max-w-md mx-auto mt-10 p-8 border border-gray-300 rounded-lg bg-white shadow">
-            <h2 className="text-2xl font-bold mb-6 text-yellow-600 text-center">
-                {activeType === 'customer' && <span className="text-yellow-600">Customer Registration</span>}
-                {activeType === 'farmer' && <span className="text-green-600">Farmer Registration</span>}
-                {activeType === 'admin' && <span className="text-blue-600">Admin Registration</span>}
+            <h2 className="text-2xl font-bold mb-6 text-yellow-600 text-center flex items-center justify-center gap-2">
+                {activeType === 'customer' && (
+                    <>
+                        <FaUser className="text-yellow-600" />
+                        <span className="text-yellow-600">Customer Registration</span>
+                    </>
+                )}
+                {activeType === 'farmer' && (
+                    <>
+                        <FaTractor className="text-green-600" />
+                        <span className="text-green-600">Farmer Registration</span>
+                    </>
+                )}
+                {activeType === 'admin' && (
+                    <>
+                        <FaUserShield className="text-blue-600" />
+                        <span className="text-blue-600">Admin Registration</span>
+                    </>
+                )}
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                    <label className="block mb-1 text-sm font-medium" htmlFor="name">
-                        Name
-                    </label>
-                    <input
-                        className="w-full p-2 border border-gray-300 rounded"
-                        type="text"
-                        name="name"
-                        id="name"
-                        value={form.name}
-                        onChange={handleChange}
-                        required
-                    />
+                    <label className="block mb-1 text-sm font-medium" htmlFor="name">Name</label>
+                    <div className="flex items-center">
+                        <FaUser className="mr-2 text-gray-400" />
+                        <input
+                            className="w-full p-2 border border-gray-300 rounded"
+                            type="text"
+                            name="name"
+                            placeholder='Ex: Dipansh Gore'
+                            id="name"
+                            value={form.name}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
                 </div>
                 <div>
-                    <label className="block mb-1 text-sm font-medium" htmlFor="email">
-                        Email
-                    </label>
-                    <input
-                        className="w-full p-2 border border-gray-300 rounded"
-                        type="email"
-                        name="email"
-                        id="email"
-                        value={form.email}
-                        onChange={handleChange}
-                        required
-                    />
+                    <label className="block mb-1 text-sm font-medium" htmlFor="email">Email</label>
+                    <div className="flex items-center">
+                        <FaEnvelope className="mr-2 text-gray-400" />
+                        <input
+                            className="w-full p-2 border border-gray-300 rounded"
+                            type="email"
+                            name="email"
+                            placeholder='Ex: dipansh@gmail.com'
+                            id="email"
+                            value={form.email}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
                 </div>
                 <div>
-                    <label className="block mb-1 text-sm font-medium" htmlFor="password">
-                        Password
-                    </label>
-                    <input
-                        className="w-full p-2 border border-gray-300 rounded"
-                        type="password"
-                        name="password"
-                        id="password"
-                        value={form.password}
-                        onChange={handleChange}
-                        required
-                    />
+                    <label className="block mb-1 text-sm font-medium" htmlFor="mobile">Mobile</label>
+                    <div className="flex items-center">
+                        <FaPhone className="mr-2 text-gray-400" />
+                        <input
+                            className="w-full p-2 border border-gray-300 rounded"
+                            type="tel"
+                            name="mobile"
+                                placeholder='Ex: 9876543210'
+                            id="mobile"
+                            maxLength={10}
+                            pattern="[6-9]\d{9}"
+                            value={form.mobile}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
                 </div>
                 <div>
-                    <label className="block mb-1 text-sm font-medium" htmlFor="confirmPassword">
-                        Confirm Password
-                    </label>
-                    <input
-                        className="w-full p-2 border border-gray-300 rounded"
-                        type="password"
-                        name="confirmPassword"
-                        id="confirmPassword"
-                        value={form.confirmPassword}
-                        onChange={handleChange}
-                        required
-                    />
+                    <label className="block mb-1 text-sm font-medium" htmlFor="password">Password</label>
+                    <div className="flex items-center">
+                        <FaLock className="mr-2 text-gray-400" />
+                        <input
+                            className="w-full p-2 border border-gray-300 rounded"
+                            type="password"
+                            name="password"
+                                placeholder='Enter your password'
+                            id="password"
+                            value={form.password}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                </div>
+                <div>
+                    <label className="block mb-1 text-sm font-medium" htmlFor="confirmPassword">Confirm Password</label>
+                    <div className="flex items-center">
+                        <FaLock className="mr-2 text-gray-400" />
+                        <input
+                            className="w-full p-2 border border-gray-300 rounded"
+                            type="password"
+                            name="confirmPassword"
+                                placeholder='Re-enter your password'
+                            id="confirmPassword"
+                            value={form.confirmPassword}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
                 </div>
                 {activeType === 'farmer' && (
                     <div>
                         <label className="block mb-1 text-sm font-medium" htmlFor="farmerType">
                             Farmer Type <span className="text-red-500">*</span>
                         </label>
-                        <select
-                            className="w-full p-2 border border-gray-300 rounded bg-white"
-                            name="farmerType"
-                            id="farmerType"
-                            value={form.farmerType}
-                            onChange={handleChange}
-                            required
-                        >
-                            <option value="" disabled>
-                                Select type
-                            </option>
-                            <option value="Crop Farmer">Crop Farmer</option>
-                            <option value="Dairy Farmer">Dairy Farmer</option>
-                            <option value="Poultry Farmer">Poultry Farmer</option>
-                            <option value="Fish Farmer">Fish Farmer</option>
-                            <option value="Other">Other</option>
-                        </select>
+                        <div className="flex items-center">
+                            <FaUserTie className="mr-2 text-gray-400" />
+                            <select
+                                className="w-full p-2 border border-gray-300 rounded bg-white"
+                                name="farmerType"
+                                id="farmerType"
+                                value={form.farmerType}
+                                onChange={handleChange}
+                                required
+                            >
+                                <option value="" disabled>Select type</option>
+                                <option value="Crop Farmer">Crop Farmer</option>
+                                <option value="Dairy Farmer">Dairy Farmer</option>
+                                <option value="Poultry Farmer">Poultry Farmer</option>
+                                <option value="Fish Farmer">Fish Farmer</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
                     </div>
                 )}
                 <button
                     type="submit"
-                    className={`w-full text-white font-medium p-2 rounded transition cursor-pointer
-                    ${activeType === 'customer'
-                            ? 'bg-yellow-600 hover:bg-yellow-700'
-                            : activeType === 'farmer'
-                                ? 'bg-green-700 hover:bg-green-800'
-                                : 'bg-blue-700 hover:bg-blue-800'
-                        }
+                    className={`w-full flex items-center justify-center gap-2 text-white font-medium p-2 rounded transition cursor-pointer
+                        ${activeType === 'customer'
+                                ? 'bg-yellow-600 hover:bg-yellow-700'
+                                : activeType === 'farmer'
+                                    ? 'bg-green-700 hover:bg-green-800'
+                                    : 'bg-blue-700 hover:bg-blue-800'
+                            }
                         `}
                 >
-                    Register
+                    Register <FaArrowRight />
                 </button>
-                <div className="flex justify-center gap-4 mb-6">
+                <div className="flex justify-center gap-6 mb-4">
                     <button
+                        type="button"
                         onClick={() => handleTypeSwitch('farmer')}
-                        className={`px-4 py-2 rounded bg-green-600 text-white font-semibold hover:bg-green-700 transition ${activeType === 'farmer' ? 'ring-2 ring-green-500' : ''
-                            }`}
+                        className={`flex items-center gap-1 text-green-700 hover:underline hover:text-green-900 font-semibold ${activeType === 'farmer' ? 'underline' : ''}`}
                     >
+                        <FaTractor />
                         Register as a Farmer
                     </button>
                     <button
+                        type="button"
                         onClick={() => handleTypeSwitch('admin')}
-                        className={`px-4 py-2 rounded bg-blue-700 text-white font-semibold hover:bg-blue-900 transition ${activeType === 'admin' ? 'ring-2 ring-blue-500' : ''
-                            }`}
+                        className={`flex items-center gap-1 text-blue-700 hover:underline hover:text-blue-900 font-semibold ${activeType === 'admin' ? 'underline' : ''}`}
                     >
+                        <FaUserShield />
                         Register as an Admin
                     </button>
                 </div>
+                <div className="text-center mb-2 flex items-center justify-center gap-2">
+                    <span className="text-gray-700">Already Registered?</span>
+                    <Link
+                        to="/login"
+                        className="text-blue-700 font-semibold hover:underline hover:text-blue-900 transition flex items-center gap-1"
+                    >
+                        Login <FaArrowRight />
+                    </Link>
+                </div>
+                {error && <div className="mt-2 text-center text-red-600 font-semibold">{error}</div>}
+                {message && <div className="mt-2 text-center text-green-600 font-semibold">{message}</div>}
             </form>
-            {message && <p className="mt-4 text-center text-green-600">{message}</p>}
         </div>
     );
 };
