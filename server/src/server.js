@@ -2,9 +2,12 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { connectDB } from './lib/db.js'
 import authRoutes from './routes/auth.route.js';
+import cors from "cors";
 
 dotenv.config();
-
+app.use(cors({
+    credentials: true
+}))
 let port = process.env.PORT;
 
 const app = express();
