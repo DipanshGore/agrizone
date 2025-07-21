@@ -48,7 +48,6 @@ export const verfiyEmail = async (req, res) => {
         })
         if (!user) {
             return res.status(400).json({ success: false, message: "Inavlid or Expired Code" })
-
         }
 
         user.isVerified = true;
