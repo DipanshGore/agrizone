@@ -8,7 +8,6 @@ const Register = () => {
     const [form, setForm] = useState({
         name: '',
         email: '',
-        mobile: '',
         password: '',
         confirmPassword: '',
         farmerType: '',
@@ -21,7 +20,6 @@ const Register = () => {
         setForm({
             name: '',
             email: '',
-            mobile: '',
             password: '',
             confirmPassword: '',
             farmerType: '',
@@ -38,48 +36,129 @@ const Register = () => {
         setError('');
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+//     const handleSubmit = (e) => {
+//         e.preventDefault();
 
-        if (!form.name || !form.email || !form.mobile || !form.password || !form.confirmPassword || (activeType === 'farmer' && !form.farmerType)) {
-            setError('Please fill all required fields.');
-            return;
-        }
+//         if (!form.name || !form.email  || !form.password || !form.confirmPassword || (activeType === 'farmer' && !form.farmerType)) {
+//             setError('Please fill all required fields.');
+//             return;
+//         }
 
-        if (!/^[6-9]\d{9}$/.test(form.mobile)) {
-            setError('Please enter a valid 10-digit mobile number.');
-            return;
-        }
+//         if (form.password !== form.confirmPassword) {
+//             setError('Passwords do not match!');
+//             return;
+//         }
 
-        if (form.password !== form.confirmPassword) {
-            setError('Passwords do not match!');
-            return;
-        }
+//         setError('');
+//         let summary = '';
+//         if (activeType === 'customer') {
+//             summary = `Registered as Customer: ${form.name} (${form.email})`;
+//         } else if (activeType === 'farmer') {
+//             summary = `Registered as Farmer (${form.farmerType}): ${form.name} (${form.email})`;
+//         } else {
+//             summary = `Registered as Admin: ${form.name} (${form.email})`;
+//         }
+//         setMessage(summary);
+// console.log("Form Data:");
+//         // Simulate API call
+//         fetch('http://localhost:5000/api/auth/signup', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({
+//                 name: form.name,
+//                 email: form.email,
+//                 password: form.password,
+//             }),
+//         })
+//         .then(res => res.json())
+//         .then(data => {
+//             if (data.success) {
+//                 setMessage('Registration successful! Please verify your email.');
+//                  navigate('/verify-otp', {
+//                  state: { email: form.email }
+//         });
+//             } else {
+//                 setError(data.message || 'Registration failed. Please try again.');
+//             }
+//         })
+//         .catch(err => {
+//             setError('Registration failed. Please try again.');
+//         });
 
-        setError('');
-        let summary = '';
-        if (activeType === 'customer') {
-            summary = `Registered as Customer: ${form.name} (${form.email})`;
-        } else if (activeType === 'farmer') {
-            summary = `Registered as Farmer (${form.farmerType}): ${form.name} (${form.email})`;
+       
+
+
+
+//         setForm({
+//             name: '',
+//             email: '',
+//             password: '',
+//             confirmPassword: '',
+//             farmerType: '',
+//         });
+//     };
+const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!form.name || !form.email || !form.password || !form.confirmPassword || (activeType === 'farmer' && !form.farmerType)) {
+        setError('Please fill all required fields.');
+        return;
+    }
+
+    if (form.password !== form.confirmPassword) {
+        setError('Passwords do not match!');
+        return;
+    }
+
+    setError('');
+    let summary = '';
+    if (activeType === 'customer') {
+        summary = `Registered as Customer: ${form.name} (${form.email})`;
+    } else if (activeType === 'farmer') {
+        summary = `Registered as Farmer (${form.farmerType}): ${form.name} (${form.email})`;
+    } else {
+        summary = `Registered as Admin: ${form.name} (${form.email})`;
+    }
+    setMessage(summary);
+
+    // ✅ Send only required fields to backend
+    fetch('http://localhost:5000/api/auth/signup', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            name: form.name,
+            email: form.email,
+            password: form.password,
+        }),
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            setMessage('Registration successful! Please verify your email.');
+            navigate('/verify-otp', {
+                state: { email: form.email }
+            });
         } else {
-            summary = `Registered as Admin: ${form.name} (${form.email})`;
+            setError(data.message || 'Registration failed. Please try again.');
         }
-        setMessage(summary);
+    })
+    .catch(() => {
+        setError('Registration failed. Please try again.');
+    });
 
-        navigate('/verify-otp', {
-            state: { email: form.email }
-        });
-
-        setForm({
-            name: '',
-            email: '',
-            mobile: '',
-            password: '',
-            confirmPassword: '',
-            farmerType: '',
-        });
-    };
+    // Reset form
+    setForm({
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        farmerType: '',
+    });
+};
 
     return (
         <div className="max-w-md mx-auto mt-10 p-8 border border-gray-300 rounded-lg bg-white shadow">
@@ -136,24 +215,7 @@ const Register = () => {
                         />
                     </div>
                 </div>
-                <div>
-                    <label className="block mb-1 text-sm font-medium" htmlFor="mobile">Mobile</label>
-                    <div className="flex items-center">
-                        <FaPhone className="mr-2 text-gray-400" />
-                        <input
-                            className="w-full p-2 border border-gray-300 rounded"
-                            type="tel"
-                            name="mobile"
-                                placeholder='Ex: 9876543210'
-                            id="mobile"
-                            maxLength={10}
-                            pattern="[6-9]\d{9}"
-                            value={form.mobile}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                </div>
+                
                 <div>
                     <label className="block mb-1 text-sm font-medium" htmlFor="password">Password</label>
                     <div className="flex items-center">
@@ -245,7 +307,7 @@ const Register = () => {
                 <div className="text-center mb-2 flex items-center justify-center gap-2">
                     <span className="text-gray-700">Already Registered?</span>
                     <Link
-                        to="/login"
+                        to="/home"
                         className="text-blue-700 font-semibold hover:underline hover:text-blue-900 transition flex items-center gap-1"
                     >
                         Login <FaArrowRight />

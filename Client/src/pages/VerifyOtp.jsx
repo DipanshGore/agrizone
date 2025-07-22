@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const OTP_LENGTH = 4;
+const OTP_LENGTH = 6;
 
 const VerifyOtp = () => {
     const location = useLocation();
@@ -30,16 +30,8 @@ const VerifyOtp = () => {
         e.preventDefault();
         const enteredOtp = otp.join("");
         if (enteredOtp.length !== OTP_LENGTH) {
-            setError("Please enter the full 4-digit OTP.");
+            setError("Please enter the full 6-digit OTP.");
             return;
-        }
-        if (enteredOtp === "1234") {
-            setSuccess("✅ Verification successful!");
-            setError("");
-            setTimeout(() => navigate("/Home"), 1500);
-        } else {
-            setError("❌ OTP is incorrect. Please try again.");
-            setSuccess("");
         }
     };
 
@@ -60,7 +52,7 @@ const VerifyOtp = () => {
         <div className="max-w-md mx-auto mt-35 p-8 border border-gray-300 bg-white shadow-xl rounded-xl">
             <h2 className="text-2xl font-bold text-center text-green-600 mb-2">Email Verification</h2>
             <p className="mb-6 text-center text-gray-600">
-                We've sent a 4-digit OTP to <span className="font-mono text-green-700">{email}</span><br />
+                We've sent a 6-digit OTP to <span className="font-mono text-green-700">{email}</span><br />
                 Please enter it below to verify your email.
             </p>
             <form onSubmit={handleSubmit} className="flex flex-col items-center gap-6">
