@@ -60,7 +60,7 @@ const Navbar = () => {
           aria-label="Main"
         >
           {["/", "/about", "/contact", "/store"].map((path, idx) => {
-            const labels = ["Home", "About", "Contact Us", "AgriStore"];
+            const labels = ["Home", "About", "Contact", "AgriStore"];
             return (
               <NavLink
                 key={labels[idx]}

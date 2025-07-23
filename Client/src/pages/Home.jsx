@@ -1,4 +1,8 @@
 import { FaStar, FaCheckCircle, } from "react-icons/fa";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import video from "../assets/Agriculture.mp4";
+import { useEffect } from "react";
 
 const features = [
   {
@@ -75,13 +79,16 @@ const videos = [
 ];
 
 const Home = () => {
+  useEffect(() => {
+    AOS.init({ duration: 1000, once: true });
+  }, []);
   return (
     <div className="min-h-screen flex flex-col font-sans text-gray-900 leading-relaxed bg-white">
-      <section
+      <section 
         className="relative flex flex-col-reverse md:flex-row items-center max-w-7xl mx-auto px-6 py-24 gap-16"
       >
-        <div className="flex-1 max-w-xl text-center md:text-left">
-          <h1
+        <div  data-aos="fade-down" className="flex-1 max-w-xl text-center md:text-left">
+          <h1  data-aos="fade-right"
             className="text-5xl md:text-6xl font-extrabold tracking-tight leading-tight text-green-900 mb-6 drop-shadow-lg"
           >
             Empowering Farmers & Customers{" "}
@@ -89,27 +96,32 @@ const Home = () => {
               with Innovation
             </span>
           </h1>
-          <p className="mb-8 text-lg md:text-xl text-gray-700 max-w-md mx-auto md:mx-0">
+          <p  data-aos="fade-left" className="mb-8 text-lg md:text-xl text-gray-700 max-w-md mx-auto md:mx-0">
             Agrizone connects you with the best agricultural equipment, fresh
             produce, and expert farming advice to nurture growth and sustainability.
           </p>
-          <button
+          <button  data-aos="fade-left"
             onClick={() => (window.location.href = "/register")}
             className="inline-block bg-yellow-400 hover:bg-yellow-500 focus-visible:ring-4 focus-visible:ring-yellow-300 text-white font-bold px-12 py-4 rounded-full shadow-xl transition text-lg tracking-wide"
           >
             Get Started
           </button>
         </div>
-        <div className="flex-1 max-w-md mx-auto rounded-3xl shadow-2xl overflow-hidden border-3 border-yellow-300">
-          <img
-            src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=600&q=80"
-            className="w-full h-auto object-cover scale-105 hover:scale-110 transition-transform duration-500"
-            loading="lazy"
-          />
-        </div>
+         <div   data-aos="fade-down"
+     data-aos-easing="linear"
+     data-aos-duration="2500" className="max-w-md mx-auto rounded-2xl shadow-2xl">
+  <video
+    src={video}
+    autoPlay
+    loop
+    muted
+    className="w-[450px] h-[254px] rounded-xl shadow-2xl object-cover transform transition-transform duration-500 hover:scale-115 cursor-pointer"
+  />
+</div>
+
       </section>
 
-      <section className="max-w-3xl mx-auto px-6 mb-20 text-center">
+      <section data-aos="fade-down-left" className="max-w-3xl mx-auto px-6 mb-20 text-center">
         <h2 className="text-3xl font-bold text-green-900 mb-4 drop-shadow">
           Our Mission
         </h2>
@@ -119,17 +131,17 @@ const Home = () => {
           to nourishing our planet.
         </p>
       </section>
-     
-      <section
+
+      <section data-aos="fade-down-right"
         className="bg-white py-20 px-6 text-center"
         aria-label="Key Services and Products"
       >
         <h2 className="text-4xl font-extrabold text-green-900 mb-12 max-w-3xl mx-auto drop-shadow">
           Key Services & Products
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 max-w-7xl mx-auto">
+        <div  className="grid grid-cols-1 md:grid-cols-4 gap-12 max-w-7xl mx-auto">
           {features.map(({ title, description, icon, link }) => (
-            <article
+            <article data-aos="flip-left"
               key={title}
               className="bg-white rounded-2xl p-10 shadow-xl hover:shadow-2xl transition-shadow cursor-pointer focus-within:ring-4 focus-within:ring-yellow-300 border-2 border-transparent hover:border-yellow-400 group"
               tabIndex={0}
@@ -151,11 +163,10 @@ const Home = () => {
           ))}
         </div>
       </section>
-      
-      <section
+
+      <section  data-aos="zoom-in-left"
         id="why-choose-us"
-        className="relative max-w-4xl mx-auto px-6 py-24 text-center bg-white rounded-3xl shadow-2xl overflow-hidden"
-        aria-label="Why Choose Agrizone"
+        className="relative max-w-4xl mx-auto px-50 py-5 text-center bg-white rounded-3xl shadow-2xl overflow-hidden"
       >
         <h2 className="text-4xl font-extrabold text-green-900 mb-6 drop-shadow-md">
           Why Choose <span className="text-yellow-500">Agrizone?</span>
@@ -182,14 +193,16 @@ const Home = () => {
           ))}
         </ul>
       </section>
-     
-      <section
+
+      <section 
         className="bg-white py-20 px-6 text-center max-w-6xl mx-auto"
       >
-        <h2 className="text-4xl font-extrabold text-green-900 mb-12 drop-shadow">
+        <h2 data-aos="fade-right" className="text-4xl font-extrabold text-green-900 mb-12 drop-shadow">
           Testimonials
         </h2>
-        <div className="flex flex-col md:flex-row gap-10">
+        <div data-aos="fade-left"
+     data-aos-offset="400"
+     data-aos-easing="ease-in-sine" className="flex flex-col md:flex-row gap-10">
           {testimonials.map(({ name, role, quote, rating }, idx) => (
             <blockquote
               key={idx}
