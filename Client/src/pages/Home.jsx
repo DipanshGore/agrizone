@@ -82,13 +82,14 @@ const Home = () => {
   useEffect(() => {
     AOS.init({ duration: 1000, once: true });
   }, []);
+  
   return (
     <div className="min-h-screen flex flex-col font-sans text-gray-900 leading-relaxed bg-white">
-      <section 
+      <section
         className="relative flex flex-col-reverse md:flex-row items-center max-w-7xl mx-auto px-6 py-24 gap-16"
       >
-        <div  data-aos="fade-down" className="flex-1 max-w-xl text-center md:text-left">
-          <h1  data-aos="fade-right"
+        <div data-aos="fade-down" className="flex-1 max-w-xl text-center md:text-left">
+          <h1 data-aos="fade-right"
             className="text-5xl md:text-6xl font-extrabold tracking-tight leading-tight text-green-900 mb-6 drop-shadow-lg"
           >
             Empowering Farmers & Customers{" "}
@@ -96,28 +97,28 @@ const Home = () => {
               with Innovation
             </span>
           </h1>
-          <p  data-aos="fade-left" className="mb-8 text-lg md:text-xl text-gray-700 max-w-md mx-auto md:mx-0">
+          <p data-aos="fade-left" className="mb-8 text-lg md:text-xl text-gray-700 max-w-md mx-auto md:mx-0">
             Agrizone connects you with the best agricultural equipment, fresh
             produce, and expert farming advice to nurture growth and sustainability.
           </p>
-          <button  data-aos="fade-left"
+          <button data-aos="fade-left"
             onClick={() => (window.location.href = "/register")}
-            className="inline-block bg-yellow-400 hover:bg-yellow-500 focus-visible:ring-4 focus-visible:ring-yellow-300 text-white font-bold px-12 py-4 rounded-full shadow-xl transition text-lg tracking-wide"
+            className="inline-block cursor-pointer bg-yellow-400 hover:bg-yellow-500 focus-visible:ring-4 focus-visible:ring-yellow-300 text-white font-bold px-12 py-4 rounded-full shadow-xl transition text-lg tracking-wide "
           >
             Get Started
           </button>
         </div>
-         <div   data-aos="fade-down"
-     data-aos-easing="linear"
-     data-aos-duration="2500" className="max-w-md mx-auto rounded-2xl shadow-2xl">
-  <video
-    src={video}
-    autoPlay
-    loop
-    muted
-    className="w-[450px] h-[254px] rounded-xl shadow-2xl object-cover transform transition-transform duration-500 hover:scale-115 cursor-pointer"
-  />
-</div>
+        <div data-aos="fade-down"
+          data-aos-easing="linear"
+          data-aos-duration="2500" className="max-w-md mx-auto rounded-2xl shadow-2xl">
+          <video
+            src={video}
+            autoPlay
+            loop
+            muted
+            className="w-[450px] h-[254px] rounded-xl shadow-2xl object-cover transform transition-transform duration-500 hover:scale-115 cursor-pointer"
+          />
+        </div>
 
       </section>
 
@@ -139,7 +140,7 @@ const Home = () => {
         <h2 className="text-4xl font-extrabold text-green-900 mb-12 max-w-3xl mx-auto drop-shadow">
           Key Services & Products
         </h2>
-        <div  className="grid grid-cols-1 md:grid-cols-4 gap-12 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 max-w-7xl mx-auto">
           {features.map(({ title, description, icon, link }) => (
             <article data-aos="flip-left"
               key={title}
@@ -164,7 +165,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section  data-aos="zoom-in-left"
+      {/* <section  data-aos="zoom-in-left"
         id="why-choose-us"
         className="relative max-w-4xl mx-auto px-50 py-5 text-center bg-white rounded-3xl shadow-2xl overflow-hidden"
       >
@@ -192,17 +193,17 @@ const Home = () => {
             </li>
           ))}
         </ul>
-      </section>
+      </section> */}
 
-      <section 
+      <section
         className="bg-white py-20 px-6 text-center max-w-6xl mx-auto"
       >
         <h2 data-aos="fade-right" className="text-4xl font-extrabold text-green-900 mb-12 drop-shadow">
           Testimonials
         </h2>
         <div data-aos="fade-left"
-     data-aos-offset="400"
-     data-aos-easing="ease-in-sine" className="flex flex-col md:flex-row gap-10">
+          data-aos-offset="400"
+          data-aos-easing="ease-in-sine" className="flex flex-col md:flex-row gap-10">
           {testimonials.map(({ name, role, quote, rating }, idx) => (
             <blockquote
               key={idx}
@@ -225,8 +226,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section
-        id="videos"
+      <section data-aos="fade-down"
         className="bg-white py-20 px-6 max-w-6xl mx-auto text-center"
         aria-label="Farming related videos"
       >
@@ -241,7 +241,8 @@ const Home = () => {
               tabIndex={0}
               aria-label={`Watch video: ${title}`}
             >
-              <div className="aspect-w-16 aspect-h-9 mb-4 rounded-lg overflow-hidden shadow-md">
+              <div data-aos="fade-up"
+                data-aos-anchor-placement="top-center" className="aspect-w-16 aspect-h-9 mb-4 rounded-lg overflow-hidden shadow-md">
                 <iframe
                   src={url}
                   title={title}
@@ -250,8 +251,9 @@ const Home = () => {
                   className="w-full h-full"
                 />
               </div>
-              <h3 className="text-2xl font-bold text-green-900 mb-2">{title}</h3>
-              <p className="text-gray-700">{description}</p>
+              <h3 data-aos="fade-left"
+                className="text-2xl font-bold text-green-900 mb-2">{title}</h3>
+              <p data-aos="fade-right" className="text-gray-700">{description}</p>
             </article>
           ))}
         </div>
