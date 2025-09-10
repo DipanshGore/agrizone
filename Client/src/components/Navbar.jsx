@@ -1,15 +1,16 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { FaBars, FaTimes, FaTractor, FaUser, FaUserShield, FaLeaf, FaSun, FaMoon, FaPhoneAlt, FaStore, FaHome, FaSignInAlt, FaUserPlus, FaChevronDown,} from "react-icons/fa";
+import {
+  FaBars, FaTimes, FaLeaf, FaSun, FaMoon,
+  FaPhoneAlt, FaStore, FaHome, FaSignInAlt, FaUserPlus
+} from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
-  const [loginOpen, setLoginOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
   const navigate = useNavigate();
-  const dropdownRef = useRef(null);
   const navRef = useRef(null);
 
   useEffect(() => {
@@ -25,20 +26,6 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setLoginOpen(false);
-      }
-    }
-    if (loginOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [loginOpen]);
-
-  useEffect(() => {
     const background = document.body;
     if (darkMode) {
       background.classList.add("dark-background");
@@ -48,12 +35,6 @@ const Navbar = () => {
       background.classList.remove("dark-background");
     }
   }, [darkMode]);
-
-  const handleLoginOption = (role) => {
-    navigate(`/login/${role}`);
-    setLoginOpen(false);
-    setMobileOpen(false);
-  };
 
   const navItems = [
     { path: "/", label: "Home", icon: <FaHome /> },
@@ -120,54 +101,14 @@ const Navbar = () => {
                 </NavLink>
               ))}
 
-              <div className="relative" ref={dropdownRef}>
-                <button
-                  className={`flex items-center gap-2 text-lg hover:text-yellow-400 transition duration-150 rounded px-2 py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 ${
-                    loginOpen ? "text-yellow-400" : ""
-                  }`}
-                  onClick={() => setLoginOpen((open) => !open)}
-                >
-                  <FaSignInAlt />
-                  Login
-                  <motion.span
-                    className="transform origin-center"
-                    animate={{ rotate: loginOpen ? 180 : 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                  >
-                    <FaChevronDown />
-                  </motion.span>
-                </button>
-                <AnimatePresence>
-                  {loginOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.9, y: -10 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.9, y: -10 }}
-                      transition={{ duration: 0.25 }}
-                      className="absolute right-0 mt-2 w-52 rounded-md shadow-lg bg-white text-gray-800 ring-1 ring-black ring-opacity-10 origin-top-right z-40"
-                    >
-                      <button
-                        className="w-full flex items-center gap-3 px-4 py-2 hover:bg-green-100 hover:text-green-900 transition text-left rounded"
-                        onClick={() => handleLoginOption("farmer")}
-                      >
-                        <FaTractor className="text-green-600" /> Farmer
-                      </button>
-                      <button
-                        className="w-full flex items-center gap-3 px-4 py-2 hover:bg-green-100 hover:text-green-900 transition text-left rounded"
-                        onClick={() => handleLoginOption("customer")}
-                      >
-                        <FaUser className="text-yellow-600" /> Customer
-                      </button>
-                      <button
-                        className="w-full flex items-center gap-3 px-4 py-2 hover:bg-green-100 hover:text-green-900 transition text-left rounded"
-                        onClick={() => handleLoginOption("admin")}
-                      >
-                        <FaUserShield className="text-blue-600" /> Admin
-                      </button>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+              <NavLink
+                to="/login"
+                className="flex items-center gap-2 text-lg hover:text-yellow-400 transition duration-150 rounded px-2 py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
+                onClick={() => setMobileOpen(false)}
+              >
+                <FaSignInAlt />
+                Login
+              </NavLink>
 
               <NavLink
                 to="/register"
@@ -196,4 +137,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

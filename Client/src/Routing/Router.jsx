@@ -7,6 +7,13 @@ import About from '../pages/About.jsx';
 import Contact from '../pages/Contact.jsx';
 import AgriStore from '../pages/AgriStore.jsx';
 import PageNotFound from '../helper/NotFound.jsx';
+import Login from '../pages/Login.jsx';
+import ProtectedRoute from "../components/ProtectedRoute";
+import FarmerDashboard from '../pages/FarmerDashboard.jsx';
+import CustomerDashboard from '../pages/CustomerDashboard.jsx';
+import AdminDashboard from '../pages/AdminDashboard.jsx';
+
+
 
 const Routes = createBrowserRouter([
   {
@@ -42,9 +49,38 @@ const Routes = createBrowserRouter([
         element: <AgriStore />
       },
       {
+        path: '/Login',
+        element: <Login />
+      },
+      {
+        path: "/farmer-dashboard",
+        element: (
+          <ProtectedRoute allow={["farmer"]}>
+            <FarmerDashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/customer-dashboard",
+        element: (
+          <ProtectedRoute allow={["customer"]}>
+            <CustomerDashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/admin-dashboard",
+        element: (
+          <ProtectedRoute allow={["admin"]}>
+            <AdminDashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
         path: '*',
         element: <PageNotFound />
-      }
+      },
+
 
     ],
   },

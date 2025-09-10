@@ -84,7 +84,7 @@ const Home = () => {
   }, []);
   
   return (
-    <div className="min-h-screen flex flex-col font-sans text-gray-900 leading-relaxed bg-white">
+    <div className="min-h-screen flex flex-col font-sans text-gray-900 leading-relaxed bg-gradient-to-tr from-lime-100 via-yellow-50 to-white">
       <section
         className="relative flex flex-col-reverse md:flex-row items-center max-w-7xl mx-auto px-6 py-24 gap-16"
       >
