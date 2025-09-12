@@ -58,9 +58,8 @@ const Register = () => {
               key={r.key}
               type="button"
               onClick={() => setRole(r.key)}
-              className={`px-4 py-2 rounded-xl border transition ${
-                role === r.key ? "bg-green-600 text-white border-green-600" : "bg-white text-green-700 border-green-300 hover:border-green-600"
-              }`}
+              className={`px-4 py-2 rounded-xl border transition ${role === r.key ? "bg-green-600 text-white border-green-600" : "bg-white text-green-700 border-green-300 hover:border-green-600"
+                }`}
             >
               {r.label}
             </button>
@@ -104,62 +103,6 @@ const Register = () => {
             />
           </div>
 
-          {/* Conditional Fields */}
-          {role === "farmer" && (
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-gray-700 mb-1">Farm Name</label>
-                <input
-                  value={farmerDetails.farmName}
-                  onChange={(e) => setFarmerDetails({ ...farmerDetails, farmName: e.target.value })}
-                  className="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-green-500"
-                  placeholder="e.g., Green Valley"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 mb-1">Farm Location</label>
-                <input
-                  value={farmerDetails.farmLocation}
-                  onChange={(e) => setFarmerDetails({ ...farmerDetails, farmLocation: e.target.value })}
-                  className="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-green-500"
-                  placeholder="City / Village"
-                />
-              </div>
-              <div className="sm:col-span-2">
-                <label className="block text-gray-700 mb-1">Crops (comma separated)</label>
-                <input
-                  value={farmerDetails.crops}
-                  onChange={(e) => setFarmerDetails({ ...farmerDetails, crops: e.target.value })}
-                  className="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-green-500"
-                  placeholder="Wheat, Rice, Maize"
-                />
-              </div>
-            </div>
-          )}
-
-          {role === "customer" && (
-            <div>
-              <label className="block text-gray-700 mb-1">Address</label>
-              <input
-                value={customerDetails.address}
-                onChange={(e) => setCustomerDetails({ address: e.target.value })}
-                className="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-green-500"
-                placeholder="Shipping address"
-              />
-            </div>
-          )}
-
-          {role === "admin" && (
-            <div>
-              <label className="block text-gray-700 mb-1">Business Name</label>
-              <input
-                value={adminDetails.businessName}
-                onChange={(e) => setAdminDetails({ businessName: e.target.value })}
-                className="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-green-500"
-                placeholder="Company / Org"
-              />
-            </div>
-          )}
 
           <button
             type="submit"

@@ -33,7 +33,6 @@ export default function CustomerDashboard() {
         </h2>
         <p><strong>Name:</strong> {user.name}</p>
         <p><strong>Email:</strong> {user.email}</p>
-        <p><strong>Address:</strong> {user.address || "Not set"}</p>
       </div>
 
       <button

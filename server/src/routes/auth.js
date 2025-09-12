@@ -2,8 +2,7 @@ import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
-import { authMiddleware } from "../middleware/auth.js";
-
+import authMiddleware, { requireRole } from "../middleware/auth.js";
 const router = express.Router();
 
 // Registration

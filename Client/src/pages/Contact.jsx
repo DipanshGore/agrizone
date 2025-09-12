@@ -51,19 +51,19 @@ const socialLinks = [
   {
     icon: <FaFacebook />,
     label: "Facebook",
-    link: "https://facebook.com/agrizone",
+    link: "https://facebook.com",
     color: "hover:text-blue-600",
   },
   {
     icon: <FaInstagram />,
     label: "Instagram",
-    link: "https://instagram.com/agrizone",
+    link: "https://instagram.com",
     color: "hover:text-pink-500",
   },
   {
     icon: <FaTwitter />,
     label: "Twitter",
-    link: "https://twitter.com/agrizone",
+    link: "https://twitter.com",
     color: "hover:text-blue-400",
   },
   {
