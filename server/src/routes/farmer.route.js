@@ -1,45 +1,73 @@
 import express from "express";
+import { authMiddleware } from "../middleware/auth.js";
+import upload from "../middleware/upload.js";
 import User from "../models/User.js";
-import authMiddleware from "../middleware/auth.js";
 
 const router = express.Router();
 
-// GET current farmer profile
+// 📌 Get farmer profile
 router.get("/me", authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select("-password");
-    if (!user) return res.status(404).json({ msg: "Farmer not found" });
+    if (!user) {
+      return res.status(404).json({ message: "Farmer not found" });
+    }
     res.json(user);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ msg: "Server error" });
+    res.status(500).json({ message: "Error fetching profile" });
   }
 });
 
-// PUT update farmer profile
+// 📌 Update profile details
 router.put("/me", authMiddleware, async (req, res) => {
   try {
-    const { name, email, farmerDetails } = req.body;
-
-    // Build update object
-    const updateFields = {
-      name,
-      email,
-      farmerDetails: {
-        contact: farmerDetails?.contact || "",
-      },
-    };
-
     const updatedUser = await User.findByIdAndUpdate(
       req.user._id,
-      { $set: updateFields },
-      { new: true, runValidators: true }
+      req.body,
+      { new: true }
+    ).select("-password");
+    res.json(updatedUser);
+  } catch (err) {
+    res.status(500).json({ message: "Error updating profile" });
+  }
+});
+
+// 📌 Upload / Update profile picture
+router.put(
+  "/me/profile-picture",
+  authMiddleware,
+  upload.single("profileImage"),
+  async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+      }
+
+      const updatedUser = await User.findByIdAndUpdate(
+        req.user._id,
+        { profileImage: `/uploads/${req.file.filename}` },
+        { new: true }
+      ).select("-password");
+
+      res.json(updatedUser);
+    } catch (err) {
+      res.status(500).json({ message: "Error uploading profile picture" });
+    }
+  }
+);
+
+// 📌 Remove profile picture
+router.delete("/me/profile-picture", authMiddleware, async (req, res) => {
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      { $unset: { profileImage: "" } },
+      { new: true }
     ).select("-password");
 
     res.json(updatedUser);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ msg: "Server error" });
+    res.status(500).json({ message: "Error removing profile picture" });
   }
 });
 

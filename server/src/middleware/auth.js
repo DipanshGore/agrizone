@@ -29,5 +29,4 @@ export const requireRole = (...roles) => (req, res, next) => {
   }
   next();
 };
-
 export default authMiddleware;

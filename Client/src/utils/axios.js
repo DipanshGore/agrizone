@@ -1,11 +1,9 @@
 import axios from "axios";
 import { getToken } from "./auth";
-
-export const BASE_URL = "http://localhost:5000"; // backend root
-export const API_URL = `${BASE_URL}/api`;        // API base
+import { API_URL } from "./api";
 
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: API_URL, // 👈 now uses API_URL from config
 });
 
 // Automatically add JWT token
