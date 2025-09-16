@@ -1,12 +1,12 @@
 import express from "express";
-import { authMiddleware } from "../middleware/auth.js";
+import { verifyToken } from "../middleware/auth.js";
 import upload from "../middleware/upload.js";
 import User from "../models/User.js";
 
 const router = express.Router();
 
 // 📌 Get farmer profile
-router.get("/me", authMiddleware, async (req, res) => {
+router.get("/me", verifyToken, async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select("-password");
     if (!user) {
@@ -19,7 +19,7 @@ router.get("/me", authMiddleware, async (req, res) => {
 });
 
 // 📌 Update profile details
-router.put("/me", authMiddleware, async (req, res) => {
+router.put("/me", verifyToken, async (req, res) => {
   try {
     const updatedUser = await User.findByIdAndUpdate(
       req.user._id,
@@ -35,7 +35,7 @@ router.put("/me", authMiddleware, async (req, res) => {
 // 📌 Upload / Update profile picture
 router.put(
   "/me/profile-picture",
-  authMiddleware,
+  verifyToken,
   upload.single("profileImage"),
   async (req, res) => {
     try {
@@ -57,7 +57,7 @@ router.put(
 );
 
 // 📌 Remove profile picture
-router.delete("/me/profile-picture", authMiddleware, async (req, res) => {
+router.delete("/me/profile-picture", verifyToken, async (req, res) => {
   try {
     const updatedUser = await User.findByIdAndUpdate(
       req.user._id,

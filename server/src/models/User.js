@@ -12,21 +12,15 @@ const userSchema = new mongoose.Schema(
     },
     profileImage: { type: String }, // ✅ new field
 
-
-
-    // Role-specific details
-    farmerDetails: {
-      farmName: String,
-      farmLocation: String,
-      crops: [String],
-      contact: String,
-    },
+// Embed customer details for simplicity
     customerDetails: {
-      address: String,
+      contact: { type: String },
+      address: { type: String },
     },
-    adminDetails: {
-      businessName: String,
-    },
+
+    // Optional: farmer/admin details
+    farmerDetails: { type: Object },
+    adminDetails: { type: Object },
   },
   { timestamps: true }
 );

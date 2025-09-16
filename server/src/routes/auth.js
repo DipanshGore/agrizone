@@ -2,54 +2,75 @@ import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
-import authMiddleware, { requireRole } from "../middleware/auth.js";
+import { verifyToken, requireRole } from "../middleware/auth.js";
+
 const router = express.Router();
 
 // Registration
 router.post("/register", async (req, res) => {
-  const { name, email, password, role, farmerDetails, customerDetails, adminDetails } = req.body;
-  if (!name || !email || !password || !role)
-    return res.status(400).json({ msg: "All required fields must be provided" });
-  if (!["farmer", "customer", "admin"].includes(role))
-    return res.status(400).json({ msg: "Invalid role" });
+  try {
+    const { name, email, password, role, farmerDetails, customerDetails, adminDetails } = req.body;
 
-  const existing = await User.findOne({ email });
-  if (existing) return res.status(400).json({ msg: "User already exists" });
+    if (!name || !email || !password || !role) {
+      return res.status(400).json({ msg: "All required fields must be provided" });
+    }
+    if (!["farmer", "customer", "admin"].includes(role)) {
+      return res.status(400).json({ msg: "Invalid role" });
+    }
 
-  const hash = await bcrypt.hash(password, 10);
+    const existing = await User.findOne({ email });
+    if (existing) return res.status(400).json({ msg: "User already exists" });
 
-  const newUser = await User.create({
-    name,
-    email,
-    password: hash,
-    role,
-    farmerDetails: role === "farmer" ? farmerDetails : undefined,
-    customerDetails: role === "customer" ? customerDetails : undefined,
-    adminDetails: role === "admin" ? adminDetails : undefined,
-  });
+    const hash = await bcrypt.hash(password, 10);
 
-  res.status(201).json({ msg: "Registered successfully", userId: newUser._id });
+    const newUser = await User.create({
+      name,
+      email,
+      password: hash,
+      role,
+      farmerDetails: role === "farmer" ? farmerDetails : undefined,
+      customerDetails: role === "customer" ? customerDetails : undefined,
+      adminDetails: role === "admin" ? adminDetails : undefined,
+    });
+
+    res.status(201).json({ msg: "Registered successfully", userId: newUser._id });
+  } catch (err) {
+    console.error("Register error:", err.message);
+    res.status(500).json({ msg: "Server error" });
+  }
 });
 
 // Login
 router.post("/login", async (req, res) => {
-  const { email, password, role } = req.body;
-  if (!email || !password || !role) return res.status(400).json({ msg: "Email, password, role required" });
+  try {
+    const { email, password, role } = req.body;
+    if (!email || !password || !role) {
+      return res.status(400).json({ msg: "Email, password, role required" });
+    }
 
-  const user = await User.findOne({ email });
-  if (!user) return res.status(400).json({ msg: "User does not exist" });
-  if (user.role !== role) return res.status(400).json({ msg: `This account is registered as ${user.role}` });
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ msg: "User does not exist" });
+    if (user.role !== role) {
+      return res.status(400).json({ msg: `This account is registered as ${user.role}` });
+    }
 
-  const ok = await bcrypt.compare(password, user.password);
-  if (!ok) return res.status(400).json({ msg: "Invalid credentials" });
+    const ok = await bcrypt.compare(password, user.password);
+    if (!ok) return res.status(400).json({ msg: "Invalid credentials" });
 
-  const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "2h" });
+    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "2h" });
 
-  res.json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
+    res.json({
+      token,
+      user: { id: user._id, name: user.name, email: user.email, role: user.role },
+    });
+  } catch (err) {
+    console.error("Login error:", err.message);
+    res.status(500).json({ msg: "Server error" });
+  }
 });
 
 // Protected user info
-router.get("/me", authMiddleware, async (req, res) => {
+router.get("/me", verifyToken, async (req, res) => {
   res.json(req.user);
 });
 
