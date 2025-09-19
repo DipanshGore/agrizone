@@ -39,7 +39,7 @@ export default function AdminDashboard() {
                   Approve
                 </button>
                 <button className="px-3 py-1 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">
-                  Suspend
+                  Delete
                 </button>
               </div>
             </li>
