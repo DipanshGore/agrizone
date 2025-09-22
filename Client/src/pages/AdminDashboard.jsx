@@ -70,7 +70,7 @@ export default function AdminDashboard() {
                         onClick={() => deleteUser(u._id)}
                         className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600"
                       >
-                        Delete
+                        Decline
                       </button>
                     </div>
                   )}

@@ -9,6 +9,7 @@ export default function AgriStore() {
   const [showLoginMessage, setShowLoginMessage] = useState(false);
   const [redirectToLogin, setRedirectToLogin] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [user, setUser] = useState(null);
 
   // Auto-stop confetti after 5s
   useEffect(() => {
@@ -17,6 +18,14 @@ export default function AgriStore() {
       return () => clearTimeout(timer);
     }
   }, [showConfetti]);
+
+  useEffect(() => {
+    // Load user from localStorage when page loads
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   // If not logged in
   if (!role) {
@@ -73,9 +82,9 @@ export default function AgriStore() {
 
   // Allowed access (Grand Welcome 🎉)
   return (
-   <div className="h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-green-100 to-green-200 relative overflow-hidden">
+    <div className="h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-green-100 to-green-200 relative overflow-hidden">
       <div className="text-center space-y-8">
-        
+
         {/* Seed sprouting */}
         <motion.div
           initial={{ scale: 0.5, opacity: 0 }}
@@ -91,9 +100,13 @@ export default function AgriStore() {
           initial={{ y: 40, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.6, duration: 1 }}
-          className="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-green-700 via-yellow-600 to-orange-600 tracking-tight"
+          className="text-5xl font-extrabold bg-clip-text text-transparent 
+                 bg-gradient-to-r from-green-700 via-yellow-600 to-orange-600 tracking-tight"
         >
-          Welcome to <span className="text-green-800">AgriStore</span>
+          Welcome  <span className="text-green-700">to  AgriStore</span> 
+          {user?.name && (
+            <span className="ml-2 text-green-900">{user.name} 🌱</span>
+          )}
         </motion.h1>
 
         {/* Subtext */}

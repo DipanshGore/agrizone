@@ -21,6 +21,9 @@ const Login = () => {
     try {
       const res = await axios.post("http://localhost:5000/api/auth/login", { ...form, role });
       saveAuth(res.data);
+      localStorage.setItem("token", res.data.token); // <-- Added
+      localStorage.setItem("role", res.data.user.role); // <-- Added
+      localStorage.setItem("user", JSON.stringify(res.data.user)); // <-- Already present
       alert("✅ Login successful");
 
       // Redirect per role
@@ -46,9 +49,8 @@ const Login = () => {
               key={r.key}
               type="button"
               onClick={() => setRole(r.key)}
-              className={`px-4 py-2 rounded-xl border transition ${
-                role === r.key ? "bg-green-600 text-white border-green-600" : "bg-white text-green-700 border-green-300 hover:border-green-600"
-              }`}
+              className={`px-4 py-2 rounded-xl border transition ${role === r.key ? "bg-green-600 text-white border-green-600" : "bg-white text-green-700 border-green-300 hover:border-green-600"
+                }`}
             >
               {r.label}
             </button>
