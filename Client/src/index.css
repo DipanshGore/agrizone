@@ -41,3 +41,15 @@
 .animate-progress {
   animation: progress 6s linear forwards;
 }
+@keyframes typing-dots {
+  0% { content: ""; }
+  33% { content: "."; }
+  66% { content: ".."; }
+  100% { content: "..."; }
+}
+
+.animate-typing-dots::after {
+  display: inline-block;
+  content: "";
+  animation: typing-dots 1.5s steps(3, end) infinite;
+}
